@@ -38,8 +38,8 @@
         </script>
 
 <template>
-    <div class="image-wrapper rounded-xl" :style="{ height: `${height}px`, width: `${width}px` }" >
-      <canvas ref="canvas" v-if="!imageLoaded" :style="{ height: `${height}px`, width: `${width}px` }" :width="width" :height="height" />
+    <div class="image-wrapper " :style="{ height: `${height}px`, width: `${width}px`, borderRadius: '20px' }" >
+      <canvas ref="canvas" v-if="!imageLoaded" :style="{ height: `${height}px`, width: `${width}px`, borderRadius: '20px' }" :width="width" :height="height" />
       <img
         :src="src"
         @load="onImageLoad"

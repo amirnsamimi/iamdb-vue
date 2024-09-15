@@ -28,7 +28,7 @@
     animation: loading 1.5s infinite;
   }
 
-  /* Keyframes for the skeleton animation */
+
   @keyframes loading {
     0% {
       left: -150px;
@@ -38,10 +38,42 @@
     }
   }
 
-  /* Skeleton element styling */
+
   .skeleton-text {
     height: 20px;
     width: 80%;
     margin: 10px 0;
     background-color: #f0f0f0;
+  }
+
+
+  .loading-dots {
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .dot {
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    border-radius: 50%;
+    background-color: white;
+    animation: bounce 0.6s 1s infinite alternate;
+  }
+  
+  .dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  @keyframes bounce {
+    to {
+      transform: translateY(-10px);
+      opacity: 0.5;
+    }
   }
