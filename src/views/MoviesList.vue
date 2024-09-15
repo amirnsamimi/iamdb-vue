@@ -21,6 +21,7 @@ const loadMore = ref<boolean>(false);
 const fetchMovies = async () => {
   scrollCount.value = 0;
   movies.value = [];
+  page.value = 1;
   loading.value = true;
   const fetchMovies = useFetch<IMOVIES>(
     `${API_CONFIG.BASE_URL}${MOVIE_APIS.MOVIES}?q=${route.query.q}&page=${page.value}`
@@ -58,11 +59,11 @@ watch(
 
 const loadMoreData = async () => {
   scrollCount.value += 1;
+  page.value += 1;
   loading.value = true;
   const fetchMovies = useFetch<IMOVIES>(
-    `${API_CONFIG.BASE_URL}${MOVIE_APIS.MOVIES}?q=${route.query.q}&page=${2}`
+    `${API_CONFIG.BASE_URL}${MOVIE_APIS.MOVIES}?q=${route.query.q}&page=${page.value}`
   );
-console.log(hasMoreContent.value)
   try {
     await fetchMovies.fetchData();
     metaData.value = fetchMovies.data.value?.metadata;
@@ -165,7 +166,7 @@ onUpdated(() => {
       v-if="hasMoreContent && scrollCount >= 2"
       class="w-full flex justify-center items-center"
     >
-      <button @click="" class="bg-primary-1000 px-4 py-2 rounded-xl">
+      <button @click="loadMoreData" class="bg-primary-1000 px-4 py-2 rounded-xl">
         Click For More
       </button>
     </section>
