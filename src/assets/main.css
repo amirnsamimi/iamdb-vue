@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.skeleton {
+    display: inline-block;
+    background-color: #222C4F;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Skeleton animation */
+  .skeleton::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: -150px;
+    height: 100%;
+    width: 150px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgb(74, 105, 160) 50%, rgba(255, 255, 255, 0) 100%);
+    animation: loading 1.5s infinite;
+  }
+
+  /* Keyframes for the skeleton animation */
+  @keyframes loading {
+    0% {
+      left: -150px;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+
+  /* Skeleton element styling */
+  .skeleton-text {
+    height: 20px;
+    width: 80%;
+    margin: 10px 0;
+    background-color: #f0f0f0;
+  }
