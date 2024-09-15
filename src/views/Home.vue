@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import Genres from "@/components/Genres.vue";
-import Search from "@/components/Search.vue";
+import { defineAsyncComponent } from 'vue';
+const Search = defineAsyncComponent(() => import('@/components/Search.vue'));
+const Genres = defineAsyncComponent(() => import('@/components/Genres.vue'));
 </script>
 <template>
   <section

@@ -1,11 +1,14 @@
 <script lang="ts" setup>
-import ListItem from "@/components/ListItem.vue";
-import Search from "@/components/Search.vue";
+
 import { useFetch } from "@/composables/useFetch";
 import { API_CONFIG, MOVIE_APIS } from "@/config/api";
 import { type IMETADATA, type IMOVIE, type IMOVIES } from "@/lib/definitions";
-import { computed, onMounted, onUnmounted, onUpdated, ref, watch } from "vue";
+import { computed, defineAsyncComponent, onMounted, onUnmounted, onUpdated, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+const Search = defineAsyncComponent(() => import('@/components/Search.vue'));
+const Genres = defineAsyncComponent(() => import('@/components/Genres.vue'));
+const ListItem = defineAsyncComponent(() => import('@/components/ListItem.vue'));
+
 
 const route = useRoute();
 const error = ref<string | null>(null);
@@ -23,14 +26,15 @@ const fetchMovies = async () => {
   movies.value = [];
   page.value = 1;
   loading.value = true;
-  const fetchMovies = useFetch<IMOVIES>(
-    `${API_CONFIG.BASE_URL}${MOVIE_APIS.MOVIES}?q=${route.query.q}&page=${page.value}`
-  );
+  const url = route.params.genreId
+    ? `${API_CONFIG.BASE_URL}${MOVIE_APIS.GENRES}/${route.params.genreId}/movies?page=${page.value}`
+    : `${API_CONFIG.BASE_URL}${MOVIE_APIS.MOVIES}?q=${route.query.q}&page=${page.value}`;
+  const fetchMovies = useFetch<IMOVIES>(url);
 
   try {
     await fetchMovies.fetchData();
     metaData.value = fetchMovies.data.value?.metadata;
-    movies.value = fetchMovies.data.value?.data ?? []
+    movies.value = fetchMovies.data.value?.data ?? [];
   } catch (err: any) {
     error.value = fetchMovies.error.value;
   } finally {
@@ -57,18 +61,27 @@ watch(
   }
 );
 
+watch(
+  () => route.params.genreId,
+  () => {
+    fetchMovies();
+  }
+);
+
+//Load more data if available with observer
 const loadMoreData = async () => {
   scrollCount.value += 1;
   page.value += 1;
   loading.value = true;
-  const fetchMovies = useFetch<IMOVIES>(
-    `${API_CONFIG.BASE_URL}${MOVIE_APIS.MOVIES}?q=${route.query.q}&page=${page.value}`
-  );
+  const url = route.params.genreId
+    ? `${API_CONFIG.BASE_URL}${MOVIE_APIS.GENRES}/${route.params.genreId}/movies?page=${page.value}`
+    : `${API_CONFIG.BASE_URL}${MOVIE_APIS.MOVIES}?q=${route.query.q}&page=${page.value}`;
+  const fetchMovies = useFetch<IMOVIES>(url);
   try {
     await fetchMovies.fetchData();
     metaData.value = fetchMovies.data.value?.metadata;
-    const data = fetchMovies.data.value?.data ?? []
-    movies.value = [...movies.value,...data]
+    const data = fetchMovies.data.value?.data ?? [];
+    movies.value = [...movies.value, ...data];
   } catch (err: any) {
     error.value = fetchMovies.error.value;
   } finally {
@@ -77,8 +90,8 @@ const loadMoreData = async () => {
   }
 };
 
+//setting up and unmounting observer
 const setupObserver = () => {
-
   observer.value = new IntersectionObserver((entries) => {
     if (entries[0].isIntersecting && !loadMore.value && scrollCount.value < 2) {
       loadMore.value = true;
@@ -102,20 +115,23 @@ onUpdated(() => {
 <template>
   <div class="max-w-screen-xl px-4 flex gap-8 mx-auto flex-col pt-12 w-full">
     <section class="gap-8 mx-auto flex justify-between items-center w-full">
-      <div class="bg-primary-1000 w-max p-2 rounded-xl">
+      <RouterLink to="/" class="bg-primary-1000 w-max p-2 rounded-xl">
         <svg width="20" height="20" class="fill-white">
           <use href="/sprite.svg#icon-arrow-left" />
         </svg>
-      </div>
+      </RouterLink>
       <div class="flex flex-col justify-center items-center">
         <h2 class="font-bold text-lg">Result</h2>
         <h3 class="opacity-40 text-xs font-light">
-          for "{{ route.query?.q }}"
+          for "{{ route.params.genreId ?  "sadas" : route.query?.q }}"
         </h3>
       </div>
       <span></span>
     </section>
-    <section class="w-full flex">
+    <section v-if="route.params.genreId" class="w-full flex">
+      <Genres :slice="true" />
+    </section>
+    <section v-else>
       <Search />
     </section>
     <section>
@@ -166,7 +182,10 @@ onUpdated(() => {
       v-if="hasMoreContent && scrollCount >= 2"
       class="w-full flex justify-center items-center"
     >
-      <button @click="loadMoreData" class="bg-primary-1000 px-4 py-2 rounded-xl">
+      <button
+        @click="loadMoreData"
+        class="bg-primary-1000 px-4 py-2 rounded-xl"
+      >
         Click For More
       </button>
     </section>

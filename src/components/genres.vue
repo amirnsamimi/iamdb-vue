@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { IGENRES } from "@/lib/definitions";
 import { useGenresStore } from "@/stores/genres";
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { RouterLink } from "vue-router";
+
+const props = defineProps<{slice?:boolean}>();
 
 const genresStore = useGenresStore();
 const genres = ref<IGENRES[] | null>(null);
@@ -12,7 +14,7 @@ const adjustLimit = () => {
   limit.value === null ? (limit.value = 4) : (limit.value = null);
 };
 
-watch([genresStore, limit], () => {
+const loadGenres = () => {
   const data = genresStore.data;
   if (data) {
     if (limit.value !== null) {
@@ -21,7 +23,18 @@ watch([genresStore, limit], () => {
       genres.value = data;
     }
   }
+}
+
+watch([genresStore, limit], () => {
+  if(props.slice){
+    limit.value = null
+  }
+  loadGenres()
 });
+
+onMounted(()=>{
+  loadGenres()
+})
 </script>
 
 <template>
@@ -32,7 +45,7 @@ watch([genresStore, limit], () => {
       :key="genre.id"
     >
       <RouterLink
-        :to="genre.name"
+        :to="`/genres/${genre.id}`"
         class="text-white bg-primary-1000 py-2 px-4 text-nowrap flex flex-wrap items-center justify-center rounded-xl text-xs"
         >{{ genre.name }}</RouterLink
       >
