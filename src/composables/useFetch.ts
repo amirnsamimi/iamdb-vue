@@ -10,7 +10,7 @@ export function useFetch<T>(url: string) {
     error.value = null
     const response = await fetch(url)
     if (!response.ok) {
-      error.value = 'Failed to fetch data'
+      error.value = await response.json()
     }else{
       const result: T = await response.json()
       data.value = result

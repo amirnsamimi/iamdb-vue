@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router';
+import { onMounted, ref } from 'vue'
+import { useRoute, useRouter, type LocationQueryValue } from 'vue-router';
 
 const router = useRouter()
 // VOICE RECOGNITION
-const movieSearchInput = ref<string>('')
+const movieSearchInput = ref<string | LocationQueryValue[]>('')
 const recognition = window.SpeechRecognition || window.webkitSpeechRecognition
 const speechRecognition = new recognition()
   speechRecognition.onresult = (event:SpeechRecognitionEvent) => {
@@ -18,13 +18,19 @@ const speechRecognition = new recognition()
   }
 
   const searchMovie = (event:KeyboardEvent | MouseEvent) => {
-    if( event instanceof KeyboardEvent && event.key === 'Enter'){
-      router.push(`/${movieSearchInput.value}`)
+    if( event instanceof KeyboardEvent){
+      router.push(`/movies?q=${movieSearchInput.value}`)
     }
     if(event instanceof MouseEvent){
-      router.push(`/${movieSearchInput.value}`)
+      router.push(`/movies?q=${movieSearchInput.value}`)
     }
   }
+
+  const route = useRoute()
+  console.log(route)
+  onMounted(()=>{
+    movieSearchInput.value = route.query?.q || ""
+  })
 
   
 </script>
@@ -32,7 +38,7 @@ const speechRecognition = new recognition()
 <template>
 
 <label class="relative w-full">
-<input type="text" @keydown="searchMovie" v-model="movieSearchInput" class="w-full  rounded-2xl p-4 bg-primary-1000  outline-none px-16  " />
+<input type="text" @keydown.enter="searchMovie" v-model="movieSearchInput" class="w-full  rounded-2xl p-4 bg-primary-1000  outline-none px-16  " />
 <svg width="24" @click="searchMovie" height="24" class=" cursor-pointer absolute fill-white opacity-80 top-0 bottom-0 my-auto left-4">
     <use href="/sprite.svg#icon-search"/>
 </svg>

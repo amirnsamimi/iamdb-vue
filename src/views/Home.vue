@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Search from "@/components/search.vue";
-import Genres from "@/components/genres.vue";
+import Search from "@/components/Search.vue";
+import Genres from "@/components/Genres.vue";
 </script>
 <template>
   <section

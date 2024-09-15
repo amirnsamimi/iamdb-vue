@@ -12,6 +12,9 @@ export default {
         },
         primary: {
           1000: '#222C4F'
+        },
+        accent:{
+          1000: '#724CF9'
         }
         },
     },
