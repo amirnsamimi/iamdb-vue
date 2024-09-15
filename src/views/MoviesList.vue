@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ListItem from "@/components/listItem.vue";
+import ListItem from "@/components/ListItem.vue";
 import Search from "@/components/Search.vue";
 import { useFetch } from "@/composables/useFetch";
 import { API_CONFIG, MOVIE_APIS } from "@/config/api";
