@@ -11,8 +11,9 @@ const genres = ref<IGENRES[] | null>(null);
 const limit = ref<number | null>(4);
 
 const adjustLimit = () => {
-  limit.value === null ? (limit.value = 4) : (limit.value = null);
+    limit.value = null
 };
+
 
 const loadGenres = () => {
   const data = genresStore.data;
@@ -26,14 +27,15 @@ const loadGenres = () => {
 }
 
 watch([genresStore, limit], () => {
-  if(props.slice){
-    limit.value = null
-  }
+
   loadGenres()
 });
 
 onMounted(()=>{
   loadGenres()
+  if(props.slice === true){
+    limit.value === null
+  }
 })
 </script>
 
