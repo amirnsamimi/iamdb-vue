@@ -24,7 +24,7 @@ export interface IMOVIES {
   };
 }
 
-export interface IMOVIE {
+export interface ISINGLEMOVIE {
   id: number;
   title: string;
   poster: string;
@@ -45,6 +45,21 @@ export interface IMOVIE {
   language:string;
   awards:string;
 ratings:string}
+
+
+export interface IMOVIE {
+  id: number;
+  title: string;
+  poster: string;
+  year: number;
+  director: string;
+  country: string;
+  imdb_rating: string;
+  imdb_votes: string;
+  imdb_id: string;
+  genres: string[];
+}
+
 
 export interface IMETADATA {
   current_page: string;

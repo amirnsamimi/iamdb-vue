@@ -3,7 +3,7 @@ import Favorite from "@/components/Favorite.vue";
 import Tags from "@/components/Tags.vue";
 import { useFetch } from "@/composables/useFetch";
 import { API_CONFIG, MOVIE_APIS } from "@/config/api";
-import type { IMOVIE } from "@/lib/definitions";
+import type { ISINGLEMOVIE } from "@/lib/definitions";
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import RatingCircle from "@/components/RatingCircle.vue";
@@ -16,28 +16,28 @@ const dataInit = {
   director: "",
   country: "",
   imdb_rating: "",
-  runtime:"",
+  runtime: "",
   imdb_votes: "",
   imdb_id: "",
   genres: [""],
   images: [""],
   plot: "",
   rated: "",
-  writer:"",
-  actor:"",
-  language:"",
-  awards:"",
-  actors:"",
-  ratings:""
+  writer: "",
+  actor: "",
+  language: "",
+  awards: "",
+  actors: "",
+  ratings: "",
 };
 
 const route = useRoute();
-const ratings = ref<{Value:string,Source:string}[]>([])
-const data = ref<IMOVIE>(dataInit);
+const ratings = ref<{ Value: string; Source: string }[]>([]);
+const data = ref<ISINGLEMOVIE>(dataInit);
 const loading = ref<boolean>(false);
 const error = ref<string | null>(null);
 
-const fetchMovie = useFetch<IMOVIE>(
+const fetchMovie = useFetch<ISINGLEMOVIE>(
   `${API_CONFIG.BASE_URL}${MOVIE_APIS.MOVIES}/${route.params?.movieId}`
 );
 const loadMovie = async () => {
@@ -53,11 +53,9 @@ const loadMovie = async () => {
   }
 };
 
-watch(data,()=>{
-  ratings.value = JSON.parse(data.value.ratings).slice(1)
-})
-
-
+watch(data, () => {
+  ratings.value = JSON.parse(data.value.ratings).slice(1);
+});
 
 onMounted(() => {
   loadMovie();
@@ -87,35 +85,43 @@ onMounted(() => {
           </svg>
         </RouterLink>
       </section>
-      <div class="flex gap-16">
-        <div class="flex flex-col py-4 w-3/12 gap-5">
-            <section>
-                <img :src="data.poster" class="w-full rounded-xl" alt="">
-            </section>
-            <section class="flex flex-col gap-4 items-center justify-between opacity-80">
-              <div class="flex w-full items-center justify-between flex-wrap gap-4">
-              <RatingCircle :rating="Number(data.imdb_rating)" /><div>
-                <h2>
-                  {{ data.imdb_votes }}
-                </h2>
-                <p class="opacity-60">
-                  ratings on IMDB
-                </p>
+      <div class="flex flex-col md:flex-row md:gap-16">
+        <div
+          class="flex md:flex-col py-4 w-full md:w-3/12 gap-5 order-2 flex-col-reverse md:order-none"
+        >
+          <section>
+            <img :src="data.poster" class="w-full rounded-xl" alt="" />
+          </section>
+          <section
+            class="flex w-full gap-4 flex-wrap h-max content-start grow justify-between opacity-80"
+          >
+            <RatingCircle :rating="Number(data.imdb_rating)" />
+            <div>
+              <h2>
+                {{ data.imdb_votes }}
+              </h2>
+              <p class="opacity-60">ratings on IMDB</p>
+            </div>
+            <div class="opacity-50 text-xs h-max leading-6 flex flex-col">
+              <div v-for="rates in ratings">
+                {{ rates.Value }} {{ rates.Source }}
               </div>
             </div>
-            <div class="opacity-50 text-xs leading-6 flex flex-col justify-start w-full">
-              <div v-for="rates in ratings"> {{ rates.Value }} {{ rates.Source }} </div>
-            </div>
-            </section>
+          </section>
         </div>
-        <div class="w-8/12">
+        <div class="w-full md:w-8/12">
           <section>
             <div class="flex py-4 gap-5">
               <div class="py-2 grow flex flex-col justify-between">
                 <div class="w-full flex flex-col gap-4">
                   <div class="flex w-full items-center justify-between">
                     <h1 class="text-5xl font-bold">{{ data.title }}</h1>
-                    <Favorite :id="data.id" />
+                    <span class="hidden z-10 md:flex"
+                      ><Favorite :id="data.id"
+                    /></span>
+                    <span class="flex z-10 md:hidden"
+                      ><Favorite bar :id="data.id"
+                    /></span>
                   </div>
                   <div>
                     <span
@@ -148,7 +154,7 @@ onMounted(() => {
             </div>
           </section>
           <section
-            class="gap-8 mb-20 mx-auto flex flex-col justify-between items-start w-full"
+            class="gap-8 mb-20 mx-auto flex-col justify-between items-start w-full hidden md:flex"
           >
             <h2 class="font-bold text-[1.75rem]">Details</h2>
             <ul
@@ -181,7 +187,39 @@ onMounted(() => {
             </ul>
           </section>
         </div>
-        
+        <section
+          class="gap-8 mb-20 mx-auto flex flex-col justify-between items-start w-full md:hidden order-4"
+        >
+          <h2 class="font-bold text-[1.75rem]">Details</h2>
+          <ul
+            class="divide-y opacity-80 divide-primary-1000 flex w-full flex-col"
+          >
+            <li class="flex py-4">
+              <h3 class="font-bold shrink-0 w-[150px]">Directors</h3>
+              <p class="grow opacity-60">{{ data.director }}</p>
+            </li>
+            <li class="flex py-4">
+              <h3 class="font-bold shrink-0 w-[150px]">Writers</h3>
+              <p class="grow opacity-60">{{ data.writer }}</p>
+            </li>
+            <li class="flex py-4">
+              <h3 class="font-bold shrink-0 w-[150px]">Actors</h3>
+              <p class="grow opacity-60">{{ data.actors }}</p>
+            </li>
+            <li class="flex py-4">
+              <h3 class="font-bold shrink-0 w-[150px]">Country</h3>
+              <p class="grow opacity-60">{{ data.country }}</p>
+            </li>
+            <li class="flex py-4">
+              <h3 class="font-bold shrink-0 w-[150px]">Language</h3>
+              <p class="grow opacity-60">{{ data.language }}</p>
+            </li>
+            <li class="flex py-4">
+              <h3 class="font-bold shrink-0 w-[150px]">Awards</h3>
+              <p class="grow opacity-60">{{ data.awards }}</p>
+            </li>
+          </ul>
+        </section>
       </div>
     </div>
   </div>
