@@ -45,7 +45,7 @@ const { id, title, country, genres, poster, imdb_rating, year } = props.movie;
       </div>
     </div>
   </div>
-  <div  v-else  @click="openMovie(id)" class="flex py-4 border-b gap-5 border-primary-1000">
+  <div  v-else  @click="openMovie(id)" class="flex cursor-pointer py-4 border-b gap-5 border-primary-1000">
     <BlurHash
       :src="poster"
       blurHash="LEHLh[WB2yk8pyoJadR*.7kCMdnj"

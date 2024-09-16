@@ -133,7 +133,7 @@ onUpdated(() => {
     <section v-if="route.path.includes('genres')" class="w-full flex">
       <Genres :slice="true" />
     </section>
-    <section v-else>
+    <section class="flex" v-else>
       <Search />
     </section>
     <section>
