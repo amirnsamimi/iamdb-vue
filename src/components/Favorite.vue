@@ -10,7 +10,7 @@ defineProps({
 const favStore = useFavStore();
 </script>
 <template>
-  <button @click="id && favStore.toggleFaved(id)">
+  <button @click.self="id && favStore.toggleFaved(id)">
     <svg width="24" height="24">
       <use
         href="/sprite.svg#icon-heart"

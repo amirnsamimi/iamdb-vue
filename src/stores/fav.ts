@@ -20,7 +20,9 @@ export const useFavStore = defineStore("fav", () => {
   const isFaved = (id: number): boolean => faved.value.includes(id);
   onMounted(() => {
     const favPersisted = localStorage.getItem("faved");
-    faved.value = JSON.parse(favPersisted || "");
+    if(favPersisted){
+    faved.value = JSON.parse(favPersisted || " ");
+  }
   });
 
   return { faved, isFaved, toggleFaved };

@@ -3,17 +3,16 @@ import type { IGENRES } from "@/lib/definitions";
 import { useGenresStore } from "@/stores/genres";
 import { onMounted, ref, watch } from "vue";
 import { RouterLink } from "vue-router";
+import Tags from "./Tags.vue";
 
-const props = defineProps<{slice?:boolean}>();
-
+const props = defineProps<{ slice?: boolean }>();
 const genresStore = useGenresStore();
 const genres = ref<IGENRES[] | null>(null);
 const limit = ref<number | null>(4);
 
 const adjustLimit = () => {
-    limit.value = null
+  limit.value = null;
 };
-
 
 const loadGenres = () => {
   const data = genresStore.data;
@@ -24,19 +23,18 @@ const loadGenres = () => {
       genres.value = data;
     }
   }
-}
+};
 
 watch([genresStore, limit], () => {
-
-  loadGenres()
+  loadGenres();
 });
 
-onMounted(()=>{
-  loadGenres()
-  if(props.slice === true){
-    limit.value === null
+onMounted(() => {
+  loadGenres();
+  if (props.slice === true) {
+    limit.value === null;
   }
-})
+});
 </script>
 
 <template>
@@ -46,11 +44,9 @@ onMounted(()=>{
       v-for="genre in genres"
       :key="genre.id"
     >
-      <RouterLink
-        :to="`/genres/${genre.id}`"
-        class="text-white bg-primary-1000 py-2 px-4 text-nowrap flex flex-wrap items-center justify-center rounded-xl text-xs"
-        >{{ genre.name }}</RouterLink
-      >
+      <RouterLink :to="`/genres/${genre.id}`">
+        <Tags :text="genre.name" />
+      </RouterLink>
     </li>
     <li v-if="limit !== null">
       <button

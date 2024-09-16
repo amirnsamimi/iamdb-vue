@@ -26,7 +26,7 @@ const fetchMovies = async () => {
   movies.value = [];
   page.value = 1;
   loading.value = true;
-  const url = route.params.genreId
+  const url = route.path.includes('genres')
     ? `${API_CONFIG.BASE_URL}${MOVIE_APIS.GENRES}/${route.params.genreId}/movies?page=${page.value}`
     : `${API_CONFIG.BASE_URL}${MOVIE_APIS.MOVIES}?q=${route.query.q}&page=${page.value}`;
   const fetchMovies = useFetch<IMOVIES>(url);
@@ -68,12 +68,14 @@ watch(
   }
 );
 
+
+
 //Load more data if available with observer
 const loadMoreData = async () => {
   scrollCount.value += 1;
   page.value += 1;
   loading.value = true;
-  const url = route.params.genreId
+  const url = route.path.includes('genres')
     ? `${API_CONFIG.BASE_URL}${MOVIE_APIS.GENRES}/${route.params.genreId}/movies?page=${page.value}`
     : `${API_CONFIG.BASE_URL}${MOVIE_APIS.MOVIES}?q=${route.query.q}&page=${page.value}`;
   const fetchMovies = useFetch<IMOVIES>(url);
@@ -128,7 +130,7 @@ onUpdated(() => {
       </div>
       <span></span>
     </section>
-    <section v-if="route.params.genreId" class="w-full flex">
+    <section v-if="route.path.includes('genres')" class="w-full flex">
       <Genres :slice="true" />
     </section>
     <section v-else>
