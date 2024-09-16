@@ -58,6 +58,7 @@ watch(
   () => route.query.q,
   () => {
     fetchMovies();
+
   }
 );
 
@@ -65,6 +66,7 @@ watch(
   () => route.params.genreId,
   () => {
     fetchMovies();
+
   }
 );
 
@@ -105,6 +107,7 @@ const setupObserver = () => {
   }
 };
 
+
 onUnmounted(() => {
   if (observer.value && scrollTarget.value) {
     observer.value.unobserve(scrollTarget.value);
@@ -125,7 +128,7 @@ onUpdated(() => {
       <div class="flex flex-col justify-center items-center">
         <h2 class="font-bold text-lg">Result</h2>
         <h3 class="opacity-40 text-xs font-light">
-          for "{{ route.params.genreId ?  "sadas" : route.query?.q }}"
+           {{ route.params.genreId ?  "" : `for ${route.query?.q}` }}
         </h3>
       </div>
       <span></span>
