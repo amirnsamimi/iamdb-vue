@@ -27,7 +27,6 @@ const speechRecognition = new recognition()
   }
 
   const route = useRoute()
-  console.log(route)
   onMounted(()=>{
     movieSearchInput.value = route.query?.q || ""
   })

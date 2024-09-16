@@ -43,9 +43,8 @@
       <img
         :src="src"
         @load="onImageLoad"
-        :style="{ display: imageLoaded ? 'flex' : 'none', height: `${height}px` }"
+        :style="{ display: imageLoaded ? 'flex' : 'none', height: `${height}px`, width: `${width}px` }"
         :alt="alt || ' '"
-        :width="width"
         class='object-cover shrink-0 rounded-xl'
       />
     </div>
