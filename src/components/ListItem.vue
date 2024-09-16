@@ -45,10 +45,9 @@ const { id, title, country, genres, poster, imdb_rating, year } = props.movie;
       </div>
     </div>
   </div>
-  <div  v-else  @click="openMovie(id)" class="flex cursor-pointer py-4  border-b gap-5 border-primary-1000">
-   <img class="h-[125px] w-[125px] rounded-xl shrink-0 object-cover" :src="poster"  />
-
-    <div class="py-2 grow flex flex-col justify-between h-[125px]">
+  <div  v-else  @click="openMovie(id)" class="flex h-max cursor-pointer py-4  border-b gap-5 divider-y-2 divider-primary-1000">
+   <img class="h-auto w-[125px] rounded-xl shrink-0 object-cover" :src="poster" :alt="title" />
+    <div class="py-2 grow flex flex-col justify-between">
       <div class="w-full">
         <div class="flex w-full items-center justify-between">
           <div class="sm:text-xl text-2xl font-bold">{{ title }}</div>
@@ -64,7 +63,7 @@ const { id, title, country, genres, poster, imdb_rating, year } = props.movie;
           </span>
         </div>
       </div>
-      <div class="flex items-center gap-3">
+      <div class="flex items-center h-full flex-wrap gap-3">
         <span class="text-md font-ligth"> {{ year }} </span>
         <span
           class="text-md w-[6px] h-[6px] rounded-full bg-primary-1000"
