@@ -33,9 +33,18 @@ export interface IMOVIE {
   country: string;
   imdb_rating: string;
   imdb_votes: string;
+  runtime:string;
   imdb_id: string;
   genres: string[];
-}
+  images: string[];
+  plot: string;
+  rated:string;
+  writer:string;
+  actors:string;
+  actor:string;
+  language:string;
+  awards:string;
+ratings:string}
 
 export interface IMETADATA {
   current_page: string;
