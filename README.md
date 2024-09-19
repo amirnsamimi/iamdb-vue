@@ -1,55 +1,52 @@
-# iamdb-vue
+# Movie Search App
 
-This template should help get you started developing with Vue 3 in Vite.
+A Vue.js application to search for movies and display their details, sourced from IMDb.
 
-## Recommended IDE Setup
+## Features
+- **Movie Search**: Type any movie title and retrieve detailed information including IMDb rating, year, director, and country.
+- **Genre Filter**: Filter the results based on genres to narrow down your search.
+- **Favorites**: Mark movies as favorites and access them easily from the favorites section.
+- **Rating Display**: Visualize the IMDb rating with a circular rating indicator for quick reference.
+- **Image Placeholders**: BlurHash is used to display image placeholders, improving perceived load time.
+- **Intersection Observer**: Improves performance by lazy-loading movies as you scroll through the list.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Components
+- **BlurHash.vue**: Displays a blurred image placeholder until the full movie image is loaded.
+- **Favorite.vue**: Allows users to mark/unmark a movie as a favorite.
+- **Genres.vue**: Displays the genres associated with a movie and allows filtering by genre.
+- **ListItem.vue**: Displays movie details such as title, poster, and IMDb rating in a list format.
+- **RatingCircle.vue**: A circular progress indicator that visualizes the movie's IMDb rating.
+- **Search.vue**: A search bar component for finding movies.
+- **Tags.vue**: Displays relevant tags and categories associated with a movie.
 
-## Type Support for `.vue` Imports in TS
+## Views
+- **Home.vue**: The homepage with a search bar and genre filter.
+- **Movie.vue**: Displays detailed information about a single movie, including title, director, and rating.
+- **MoviesList.vue**: Shows a list of movies based on search or genre selection.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## Setup
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
+### Install dependencies
+```bash
 npm install
-```
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
+### Building Project 
+```bash
 npm run build
-```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
 
-```sh
-npm run test:unit
-```
+## Technologies Used
+Vue.js 3: Front-end framework for building interactive UIs.
+Vue Router: Managing routing between the different views (home, movie details, etc.).
+TypeScript: Used for type safety and better development experience.
+Pinia/Vuex: For global state management, handling favorites, and search results.
+BlurHash: For generating and displaying image placeholders.
+IMDb API: Movie data source, including details such as title, year, rating, and more.
 
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
+## Contributing
+Feel free to fork this project and submit pull requests for improvements or additional features.
 
-```sh
-npm run test:e2e:dev
-```
+## License
+This project is licensed under the MIT License.
 
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
 
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
-
-```sh
-npm run build
-npm run test:e2e
-```
