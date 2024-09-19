@@ -24,17 +24,6 @@ A Vue.js application to search for movies and display their details, sourced fro
 - **Movie.vue**: Displays detailed information about a single movie, including title, director, and rating.
 - **MoviesList.vue**: Shows a list of movies based on search or genre selection.
 
-## Setup
-
-### Install dependencies
-```bash
-npm install
-
-### Building Project 
-```bash
-npm run build
-
-
 ## Technologies Used
 Vue.js 3: Front-end framework for building interactive UIs.
 Vue Router: Managing routing between the different views (home, movie details, etc.).
@@ -48,5 +37,18 @@ Feel free to fork this project and submit pull requests for improvements or addi
 
 ## License
 This project is licensed under the MIT License.
+
+## Setup
+
+### Install dependencies
+```bash
+npm install
+
+### Building Project 
+```bash
+npm run build
+
+
+
 
 
