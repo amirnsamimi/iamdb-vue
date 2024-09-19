@@ -41,11 +41,9 @@ This project is licensed under the MIT License.
 ## Setup
 
 ### Install dependencies
-```bash
 npm install
 
-### Building Project 
-```bash
+ Building Project 
 npm run build
 
 
