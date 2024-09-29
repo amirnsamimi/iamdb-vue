@@ -1,14 +1,23 @@
 <script lang="ts" setup>
-
+import { useGenresStore } from "@/stores/genres";
 import { useFetch } from "@/composables/useFetch";
 import { API_CONFIG, MOVIE_APIS } from "@/config/api";
 import { type IMETADATA, type IMOVIE, type IMOVIES } from "@/lib/definitions";
-import { computed, defineAsyncComponent, onMounted, onUnmounted, onUpdated, ref, watch } from "vue";
+import {
+  computed,
+  defineAsyncComponent,
+  onMounted,
+  onUnmounted,
+  onUpdated,
+  ref,
+  watch,
+} from "vue";
 import { useRoute } from "vue-router";
-const Search = defineAsyncComponent(() => import('@/components/Search.vue'));
-const Genres = defineAsyncComponent(() => import('@/components/Genres.vue'));
-const ListItem = defineAsyncComponent(() => import('@/components/ListItem.vue'));
-
+const Search = defineAsyncComponent(() => import("@/components/Search.vue"));
+const Genres = defineAsyncComponent(() => import("@/components/Genres.vue"));
+const ListItem = defineAsyncComponent(
+  () => import("@/components/ListItem.vue")
+);
 
 const route = useRoute();
 const error = ref<string | null>(null);
@@ -20,13 +29,14 @@ const scrollCount = ref<number>(0);
 const observer = ref<IntersectionObserver | null>(null);
 const scrollTarget = ref<HTMLElement | null>(null);
 const loadMore = ref<boolean>(false);
+const genresStore = useGenresStore();
 
 const fetchMovies = async () => {
   scrollCount.value = 0;
   movies.value = [];
   page.value = 1;
   loading.value = true;
-  const url = route.path.includes('genres')
+  const url = route.path.includes("genres")
     ? `${API_CONFIG.BASE_URL}${MOVIE_APIS.GENRES}/${route.params.genreId}/movies?page=${page.value}`
     : `${API_CONFIG.BASE_URL}${MOVIE_APIS.MOVIES}?q=${route.query.q}&page=${page.value}`;
   const fetchMovies = useFetch<IMOVIES>(url);
@@ -50,6 +60,12 @@ const hasMoreContent = computed(() => {
   }
 });
 
+const checkGenre = () => {
+  return genresStore.data?.find(
+    (i: { id: number; name: string }) => i.id === Number(route.params.genreId)
+  );
+};
+
 onMounted(() => {
   fetchMovies();
 });
@@ -58,7 +74,6 @@ watch(
   () => route.query.q,
   () => {
     fetchMovies();
-
   }
 );
 
@@ -66,18 +81,15 @@ watch(
   () => route.params.genreId,
   () => {
     fetchMovies();
-
   }
 );
-
-
 
 //Load more data if available with observer
 const loadMoreData = async () => {
   scrollCount.value += 1;
   page.value += 1;
   loading.value = true;
-  const url = route.path.includes('genres')
+  const url = route.path.includes("genres")
     ? `${API_CONFIG.BASE_URL}${MOVIE_APIS.GENRES}/${route.params.genreId}/movies?page=${page.value}`
     : `${API_CONFIG.BASE_URL}${MOVIE_APIS.MOVIES}?q=${route.query.q}&page=${page.value}`;
   const fetchMovies = useFetch<IMOVIES>(url);
@@ -107,7 +119,6 @@ const setupObserver = () => {
   }
 };
 
-
 onUnmounted(() => {
   if (observer.value && scrollTarget.value) {
     observer.value.unobserve(scrollTarget.value);
@@ -128,7 +139,7 @@ onUpdated(() => {
       <div class="flex flex-col justify-center items-center">
         <h2 class="font-bold text-lg">Result</h2>
         <h3 class="opacity-40 text-xs font-light">
-           {{ route.params.genreId ?  "" : `for ${route.query?.q}` }}
+          {{ route.params.genreId ? `for "${checkGenre().name}"` : `for "${route.query?.q}"` }}
         </h3>
       </div>
       <span></span>
