@@ -61,9 +61,14 @@ const hasMoreContent = computed(() => {
 });
 
 const checkGenre = () => {
-  return genresStore.data?.find(
+  const data = genresStore.data?.find(
     (i: { id: number; name: string }) => i.id === Number(route.params.genreId)
   );
+  if(data){
+    return data
+  }else{
+    return {id:0,name:" "}
+  }
 };
 
 onMounted(() => {
